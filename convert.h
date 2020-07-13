@@ -15,5 +15,6 @@ size_t	ft_strlen(const char *s);
 double	ft_atof(char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_atoi(const char *str);
+char	*ft_fota(double f, int m);
 
 #endif

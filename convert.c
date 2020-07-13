@@ -193,38 +193,48 @@ int main(void)
 	lineList[18] = ft_strdup(ft_strjoin(ft_strjoin("0,0,\"", gList[2]), "\",0,0"));
 	lineList[19] = ft_strdup("//Break Periods\n//Storyboard Layer 0 (Background)\n//Storyboard Layer 1 (Fail)\n//Storyboard Layer 2 (Pass)\n//Storyboard Layer 3 (Foreground)\n//Storyboard Layer 4 (Overlay)\n//Storyboard Sound Samples\n\n[TimingPoints]");
 
-	printList(lineList);
+	// printList(lineList);
 
 	// bpm lines
 	int		lineC = 20;
 	char	*time;
 	double	bpm;
 
+	while (ret > 0)
+	{
+		ret = get_next_line(fd, &line);
+		if (ft_strnstr(line, "StartTime", ft_strlen(line)))
+			break ;
+		if (line)
+			freeLine(&line);
+	}
+	if (ret < 0)
+		return (-1);
 	while (1)
 	{
-		while (ret > 0)
-		{
-			ret = get_next_line(fd, &line);
-			if (ft_strnstr(line, "StartTime", ft_strlen(line)))
-				break ;
-			if (line)
-				freeLine(&line);
-		}
-		if (ret < 0)
-			return (-1);
-		time = ft_strdup(line + 13);
+		if (ft_strnstr(line, "SliderVelocities", ft_strlen(line)))
+			break ;
+		time = ft_strdup(ft_strjoin(line + 13, ","));
+		if (line)
+			freeLine(&line);
 		ret = get_next_line(fd, &line);
 		if (ret < 0)
 			return (-1);
-		bpm = 60000/(ft_atof(ft_strdup(line + 7)));
-		printf("%f\n", bpm);
-		sleep(1);
-		// lineList[lineC] = ft_strdup(ft_strjoin(time, ft_fota(bpm, 4)) MORE ;;;; );
-		if (ft_strnstr(line, "SliderVelocities", ft_strlen(line)))
-			break ;
+		bpm = 60000 / (ft_atof(ft_strdup(line + 7)));
+		lineList[lineC] = ft_strdup(ft_strjoin(ft_strjoin(time, ft_fota(bpm, 6)), ",4,2,1,50,1,0"));
+		lineC++;
+		if (line)
+			freeLine(&line);
+		ret = get_next_line(fd, &line);
+		if (ret < 0)
+			return (-1);
 	}
+	printList(lineList);
 
 	// slider velocities
+
+
+	// hit objects!
 	// 475,337.078651685393,4,2,1,70,1,0
 
 

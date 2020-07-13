@@ -4,7 +4,6 @@ static char	*mstr(char *str, int dig, int dig2, int f, int dec, int neg)
 {
 	int c;
 
-	printf("%i : %i : %i : %i\n", dig, dig2, f, dec);
 	if (neg > 0)
 		str[0] = '-';
 	c = neg;
@@ -16,9 +15,9 @@ static char	*mstr(char *str, int dig, int dig2, int f, int dec, int neg)
 		c++;
 	}
 	str[c] = (f / dig) + '0';
-	c++;
 	if (dec)
 	{
+		c++;
 		str[c] = '.';
 		c++;
 		while (dig2 > 1)
@@ -28,20 +27,25 @@ static char	*mstr(char *str, int dig, int dig2, int f, int dec, int neg)
 			dig2 = dig2 / 10;
 			c++;
 		}
+		str[c] = (dec / dig2) + '0';
 	}
-	str[c] = (dec / dig2) + '0';
 	str[c + 1] = '\0';
 	return (str);
 }
 
-double		findDec(double f)
+double		findDec(double f, int m)
 {
 	double tmp;
 
 	tmp = f;
 	while (tmp >= 1)
 		tmp--;
-	return (tmp * 10000);
+	while (m)
+	{
+		tmp = tmp * 10;
+		m--;
+	}
+	return (tmp);
 }
 
 char	*ft_fota(double f, int m)
@@ -61,32 +65,20 @@ char	*ft_fota(double f, int m)
 		f = f * -1;
 		neg = 1;
 	}
-	dec = findDec(f);
-	while (dig <= f)
+	dec = findDec(f, m);
+	while (dig <= f / 10)
 	{
 		dig = dig * 10;
 		c++;
 	}
 	dig2 = 1;
-	while (dig2 <= dec)
+	while (dig2 <= dec / 10)
 	{
 		dig2 = dig2 * 10;
 		c++;
 	}
-	str = (char*)malloc(c + 1 + neg);
+	str = (char*)malloc(c + 3 + neg);
 	if (!(str))
 		return (NULL);
 	return (mstr(str, (int)dig, (int)dig2, (int)f, (int)dec, neg));
 }
-
-int main(void)
-{
-	double f = 43242.424;
-	double f2 = 43242;
-	printf("%s\n", ft_fota(f, 4));
-	printf("%s\n", ft_fota(f2, 4));
-}
-
-
-
-// f = 468.750
