@@ -19,7 +19,7 @@ char	*strcut(char *str, int i)
 	char	*str2 = malloc(6);
 
 	str2[0] = '.';
-	while (str[i + c], c < 4)
+	while (str[i + c] && c < 4)
 	{
 		str2[c] = str[i + c];
 		c++;
@@ -39,12 +39,11 @@ char	*strcut(char *str, int i)
 
 double	assign(char *tmp, int i)
 {
-	int		c;
 	int		len;
 	double	f;
 	double	rest;
 
-	if (ft_strlen(tmp) == i)
+	if (ft_strlen(tmp) == (unsigned int)i)
 		return ((double)(atoi(tmp)));
 	len = ft_strlen(tmp + i + 1);
 	f = (double)(ft_atoi(tmp));
@@ -65,7 +64,7 @@ double	ft_atof(char *str)
 	char	*tmp;
 
 	i = locate('.', str);
-	if (i == ft_strlen(str))
+	if ((unsigned int)i == ft_strlen(str))
 		tmp = ft_strdup(str);
 	else
 		tmp = ft_strjoin(ft_substr(str, 0, i), strcut(str, i));
